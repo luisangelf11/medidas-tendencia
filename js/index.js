@@ -98,7 +98,7 @@ const getModa = () => {
             moda.push(element);
         }
     }
-    moda.map(el=> $moda.textContent = `${el} `);
+    moda.map(el=> $moda.textContent += `${el.toString()} `);
 }
 
 //Events
