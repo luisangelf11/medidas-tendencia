@@ -15,10 +15,14 @@ let xi = [];
 //Functions App Controls
 const insertData = () => {
     let element = parseFloat($input.value);
-    xi.push(element);
-    if ($xi.textContent === "") $xi.textContent += `${element.toString()}`;
-    else $xi.textContent += `, ${element.toString()}`
-    $input.value = '';
+    if(isNaN(element)){
+     alert('Por favor, solo introduzca valores numéricos');
+    }else{
+        xi.push(element);
+        if ($xi.textContent === "") $xi.textContent += `${element.toString()}`;
+        else $xi.textContent += `, ${element.toString()}`
+        $input.value = '';
+    }
 }
 
 const deleteElement = () => {
@@ -53,15 +57,31 @@ const getMedia = () => {
 }
 
 const getMediana = () => {
-    let result = 0;
-    result = (xi.length + 1) / 2;
-    $mediana.textContent = result;
+  // Ordenar el arreglo
+  let arregloOrdenado = xi.slice().sort((a, b)=> {
+    return a - b;
+  });
+  let longitud = arregloOrdenado.length;
+  let mediana;
+  // Si la longitud del arreglo es impar, la mediana es el valor central
+  if (longitud % 2 !== 0) {
+    mediana = arregloOrdenado[Math.floor(longitud / 2)];
+  } else {
+    // Si la longitud del arreglo es par, la mediana es el promedio de los dos valores centrales
+    let indiceMedio1 = longitud / 2 - 1;
+    let indiceMedio2 = longitud / 2;
+    mediana = (arregloOrdenado[indiceMedio1] + arregloOrdenado[indiceMedio2]) / 2;
+  }
+  $mediana.textContent = mediana;
 }
 
 const getMediaGeometrica = () => {
     let raiz = 0,
         datosMultiplicados = 0;
-
+    //Validar si hay un elemnto con valor 0    
+    for (let i = 0; i < xi.length; i++) {
+        if (xi[i] === 0) return $g.textContent = `No se puede calcular`;
+    }
     for (let i = 0; i < xi.length; i++) {
         if (datosMultiplicados === 0) datosMultiplicados = xi[i];
         else datosMultiplicados = datosMultiplicados * xi[i];
@@ -73,6 +93,10 @@ const getMediaGeometrica = () => {
 const getMediaArmonica = () => {
     let result = 0,
         elementSum = 0;
+    //Validar si hay un elemnto con valor 0    
+    for (let i = 0; i < xi.length; i++) {
+        if (xi[i] === 0) return $h.textContent = `No se puede calcular`;
+    }
     for (let i = 0; i < xi.length; i++) {
         elementSum += (1 / xi[i])
     }
@@ -98,7 +122,7 @@ const getModa = () => {
             moda.push(element);
         }
     }
-    moda.map(el=> $moda.textContent += `${el.toString()} `);
+    moda.map(el => $moda.textContent += `${el.toString()} `);
 }
 
 //Events
